@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { ReactElement, useState } from 'react';
 import './App.css';
+import {TodoList, Todo} from './todolist';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  
+  const defaultTodos: Todo[] = [
+    {
+      id: 1,
+      text: 'Yolo',
+      done: false
+    },
+    {
+      id: 2,
+      text: 'Bolo',
+      done: false
+    }
+  ]
+
+  const [todos, setTodos] = useState(defaultTodos)
+
+  function handleChange(event: React.ChangeEvent) {
+    const id = event.target.id
+    setTodos(prevTodos => {
+      const newTodos =  prevTodos.map(todo => {
+        if (todo.id.toString() === id) {
+          todo.done = !todo.done
+        }
+        return todo
+      });
+      return newTodos;
+    });
+  }
+
+  return <div>
+    <TodoList todos={todos} handleChange={handleChange}></TodoList>
+  </div>
 }
 
 export default App;
